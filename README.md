@@ -1,2 +1,2 @@
 # Trilateration-Example
-This python script demonstrates how to get the location of an object from 3 beacons.
+This python script demonstrates how to get the location of an object from 3 beacons using a trilateration algorithim. 
