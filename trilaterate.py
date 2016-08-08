@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 
 def getlocation(xA,yA,zA,xB,yB,zB,xC,yC,zC):
+    #configure plot
     fig=plt.figure(1)
     plt.axis([-100,190,-100,190])
     ax=fig.add_subplot(1,1,1)
@@ -26,7 +27,7 @@ def getlocation(xA,yA,zA,xB,yB,zB,xC,yC,zC):
     ax.add_patch(circcx)
     plt.draw()
     
-    
+    #calculate the center
     A1 = (-(xA)*2)
     B1 = ((xA)**2)
     C1 = (-(yA)*2)
@@ -75,7 +76,7 @@ def getlocation(xA,yA,zA,xB,yB,zB,xC,yC,zC):
     print "y2",A2, E2 
     
     A5=E2-E
-    B5=abs(A2)+A
+    B5=abs(A2)+A 
     x=A5/B5
     print B5,A5
     print "x=",x
@@ -83,6 +84,7 @@ def getlocation(xA,yA,zA,xB,yB,zB,xC,yC,zC):
     y=(A2*x)+E2
     print "y=",y
     
+    #draw resulting point
     circd=plt.Circle((x,y), radius=2, color='b', fill=True)
     ax.text(x+5, y, "x="+str(int(x))+"\ny="+str(int(y)))
 
@@ -92,6 +94,7 @@ def getlocation(xA,yA,zA,xB,yB,zB,xC,yC,zC):
     
 
 def main():
+    #starting x,y, and z(radius is the RSSI of beacon) locations of circles
     xA = 30
     yA = 130
     zA = 70
@@ -102,6 +105,7 @@ def main():
     yC = 30
     zC = 100
 
+    #simulate movement of an object by increasing or decreasing radius of the three beacons
     for i in range(1,20):
         zA+=1
         zB-=1
