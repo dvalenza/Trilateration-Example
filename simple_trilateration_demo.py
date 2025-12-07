@@ -4,14 +4,76 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend
 
-def create_trilateration_plot():
-    # Example beacon positions and radii
-    xA, yA, zA = 30, 130, 70  # Beacon A
-    xB, yB, zB = 30, 10, 80   # Beacon B  
-    xC, yC, zC = 150, 30, 100 # Beacon C
+def calculate_trilateration(xA, yA, zA, xB, yB, zB, xC, yC, zC):
+    """
+    Calculate the trilateration position using the same algorithm as the main script
+    """
+    # Convert circle equations to standard form coefficients
+    A1 = -2 * xA
+    B1 = xA**2
+    C1 = -2 * yA
+    D1 = yA**2
+    E1 = zA**2
     
-    # Calculate trilateration (simplified from original)
-    x, y = 72, 55  # Example calculated position
+    A2 = -2 * xB
+    B2 = xB**2
+    C2 = -2 * yB
+    D2 = yB**2
+    E2 = zB**2
+    
+    A3 = -2 * xC
+    B3 = xC**2
+    C3 = -2 * yC
+    D3 = yC**2
+    E3 = zC**2
+    
+    # Create linear system by subtracting equations
+    A = A1 - A2
+    B = B1 - B2
+    C = C1 - C2
+    D = D1 - D2
+    E = E1 - E2
+    E -= B
+    E -= D
+    A = -A
+    
+    # Convert first equation to slope-intercept form
+    E = E / float(C)
+    A = A / float(C)
+    
+    # Second equation
+    A2_new = A2 - A3
+    B2_new = B2 - B3
+    C2_new = C2 - C3
+    D2_new = D2 - D3
+    E2_new = E2 - E3
+    E2_new -= B2_new
+    E2_new -= D2_new
+    A2_new = -A2_new
+    
+    # Convert second equation to slope-intercept form
+    E2_new = E2_new / float(C2_new)
+    A2_new = A2_new / float(C2_new)
+    
+    # Find intersection of two lines
+    A5 = E2_new - E
+    B5 = abs(A2_new) + A
+    x = A5 / B5
+    
+    # Calculate y using one of the line equations
+    y = (A2_new * x) + E2_new
+    
+    return x, y
+
+def create_trilateration_plot():
+    # Example beacon positions and radii (well-separated triangle formation)
+    xA, yA, zA = 10, 100, 85   # Beacon A (top-left)
+    xB, yB, zB = 40, 10, 75    # Beacon B (bottom-center)  
+    xC, yC, zC = 140, 60, 70   # Beacon C (right-middle)
+    
+    # Calculate actual trilateration position
+    x, y = calculate_trilateration(xA, yA, zA, xB, yB, zB, xC, yC, zC)
+    print(f"Calculated position: ({x:.2f}, {y:.2f})")
     
     # Create the plot
     fig, ax = plt.subplots(1, 1, figsize=(10, 8))
